@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 
-Route::middleware(['web', Authenticate::class, DispatchServingFilamentEvent::class])
-    ->prefix('admin')
-    ->group(function () {
-        // Filament will handle admin routes here automatically
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
     });
+
+    Route::resource('/products', App\Http\Controllers\Admin\ProductController::class);
+    Route::resource('/orders', App\Http\Controllers\Admin\OrderController::class);
+});
